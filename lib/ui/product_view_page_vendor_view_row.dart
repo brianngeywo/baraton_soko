@@ -21,19 +21,27 @@ class ProductViewPageVendorViewRow extends StatelessWidget {
             if (snapshot.data != null) {
               var user = snapshot.data;
               return Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: CircleAvatar(
                       backgroundColor: Colors.grey.shade300,
-                      radius: 20,
+                      radius: 25,
                     ),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("${user.firstName} ${user.lastName}"),
-                      Text("${user.phoneNumber}"),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("${user.firstName} ${user.lastName}"),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text("${user.phoneNumber}"),
+                      ),
                     ],
                   ),
                 ],

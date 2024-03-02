@@ -8,80 +8,82 @@ import 'package:provider/provider.dart';
 
 class WelcomeScreenProductCard extends StatelessWidget {
   final ProductModel product;
-  final BoxConstraints constraints;
 
   const WelcomeScreenProductCard({
     super.key,
-    required this.constraints,
     required this.product,
   });
 
   @override
   Widget build(BuildContext context) {
     var likes = context.read<LikeDislikesProvider>().readProductLikes(product.id);
-    return SizedBox(
-      // width: constraints.maxWidth * 0.4,
-      // height: 200,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          MaterialButton(
-            padding: EdgeInsets.all(0),
-            onPressed: () => Navigator.of(context).push(CupertinoPageRoute(
-                builder: (context) => ProductViewPage(
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return SizedBox(
+          width: constraints.maxWidth * 0.4,
+          // height: 200,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              MaterialButton(
+                padding: EdgeInsets.all(0),
+                onPressed: () => Navigator.of(context).push(CupertinoPageRoute(
+                    builder: (context) => ProductViewPage(
                       product: product,
                     ))),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                image: DecorationImage(
-                  image: NetworkImage(product.imageUrl),
-                  fit: BoxFit.cover,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                      image: NetworkImage(product.imageUrl),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  height: constraints.maxHeight * 0.3,
+                  width: constraints.maxWidth * 0.4,
+                  margin: EdgeInsets.all(8),
                 ),
               ),
-              height: constraints.maxHeight * 0.3,
-              width: constraints.maxWidth * 0.4,
-              margin: EdgeInsets.all(8),
-            ),
-          ),
-          SizedBox(
-            width: constraints.maxWidth * 0.4,
-            // height: 200,
-            child: Row(
-              // mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    product.title,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
+              SizedBox(
+                width: constraints.maxWidth * 0.4,
+                // height: 200,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        product.title,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    TextButton.icon(
+                      onPressed: () => context.read<LikeDislikesProvider>().likeDislikePost(productId: product.id, isLike: true),
+                      icon: const Icon(Icons.thumb_up),
+                      label: FutureBuilder<List<LikeDislikeTable>>(
+                          future: likes,
+                          builder: (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data != null) {
+                                var likes = snapshot.data.length;
+                                return Text(likes.toString());
+                              } else {
+                                return CircularProgressIndicator();
+                              }
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          }),
+                    ),
+                  ],
                 ),
-                TextButton.icon(
-                  onPressed: () => context.read<LikeDislikesProvider>().likeDislikePost(productId: product.id, isLike: true),
-                  icon: const Icon(Icons.thumb_up),
-                  label: FutureBuilder<List<LikeDislikeTable>>(
-                      future: likes,
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if (snapshot.hasData) {
-                          if (snapshot.data != null) {
-                            var likes = snapshot.data.length;
-                            return Text(likes.toString());
-                          } else {
-                            return CircularProgressIndicator();
-                          }
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                      }),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

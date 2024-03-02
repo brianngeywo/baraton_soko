@@ -22,7 +22,10 @@ class ProductViewSimilarItemsSection extends StatelessWidget {
         children: <Widget>[
           const Text(
             "Similar Items",
-            style: TextStyle(),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
           ),
           const SizedBox(height: 10),
           FutureBuilder<List<ProductModel>>(

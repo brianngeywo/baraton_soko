@@ -125,7 +125,7 @@ class _ProductViewPageState extends State<ProductViewPage> {
             children: <Widget>[
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+                  // borderRadius: BorderRadius.circular(10),
                   image: DecorationImage(
                     image: NetworkImage(widget.product.imageUrl),
                     fit: BoxFit.cover,
@@ -135,6 +135,7 @@ class _ProductViewPageState extends State<ProductViewPage> {
                 width: double.infinity,
               ),
               ProductViewPageVendorViewRow(product: widget.product),
+              Divider(),
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Column(
@@ -145,7 +146,10 @@ class _ProductViewPageState extends State<ProductViewPage> {
                       children: [
                         Text(
                           widget.product.title,
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                         Text(
                           "KES ${widget.product.price}",
@@ -156,18 +160,23 @@ class _ProductViewPageState extends State<ProductViewPage> {
                     SizedBox(height: 10),
                     Text(
                       "Product description",
-                      style: TextStyle(),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
                     ),
                     SizedBox(height: 10),
                     Text(
                       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aute vel minim euismod praesent officia eos sanctus cum commodi "
-                      "aliquip esse ea, lobortis exercitation enim luptatum elitr liber, nihil velit ullamco labore aute dolore nostrud iure justo esse quis illum tempor nonummy placerat nonumy. Illum aliquyam duis option sanctus. Aliquid zzril nihil clita aliquam accumsan takimata culpa quod iusto clita nostrud. Aliquam nostrud vel. Kasd liber vel.sn",
+                      "aliquip esse ea, lobortis exercitation enim luptatum elitr liber, nihil velit ullamco labore aute dolore nostrud iure justo esse quis illum tempor nonummy placerat nonumy. "
+                          "Illum aliquyam duis option sanctus. Aliquid zzril nihil clita aliquam accumsan takimata culpa quod iusto clita nostrud. Aliquam nostrud vel. Kasd liber vel.sn",
                       style: TextStyle(),
                     ),
                   ],
                 ),
               ),
-               ProductViewSimilarItemsSection(categoryId: widget.product.categoryId),
+              Divider(),
+              ProductViewSimilarItemsSection(categoryId: widget.product.categoryId),
               const SizedBox(height: 70),
             ],
           ),
