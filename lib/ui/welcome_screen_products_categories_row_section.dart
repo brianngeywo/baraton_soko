@@ -14,11 +14,11 @@ class WelcomeScreenProductsCategoriesRowSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<List<CategoryModel>>(
         future: context.read<CategoriesProvider>().fetchCategories(),
-        initialData: context.read<CategoriesProvider>().categories,
+        // initialData: context.read<CategoriesProvider>().categories,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data != null) {
-              var categories = snapshot.data;
+              List<CategoryModel> categories = snapshot.data;
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(

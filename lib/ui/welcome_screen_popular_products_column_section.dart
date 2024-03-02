@@ -18,9 +18,11 @@ class WelcomeScreenProductsColumnSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categoryId = context.read<CategoriesProvider>().selectedCategory.id;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    // final categoryId = context.read<CategoriesProvider>().selectedCategory.id;
+    return ListView(
+      // crossAxisAlignment: CrossAxisAlignment.start,
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,7 +44,7 @@ class WelcomeScreenProductsColumnSection extends StatelessWidget {
           ],
         ),
         WelcomeScreenProductsCategoriesRowSection(),
-        WelcomeScreenSelectedCategoryProducts(constraints: constraints, categoryId: categoryId )
+        // WelcomeScreenSelectedCategoryProducts(constraints: constraints )
       ],
     );
   }

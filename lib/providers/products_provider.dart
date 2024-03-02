@@ -25,6 +25,7 @@ class ProductsProvider with ChangeNotifier {
   Future<List<ProductModel>> getAllProducts() async {
     final result = await _readAllProductsUseCase.getAllProducts();
     _products = result;
+    print(result);
     notifyListeners();
     return result;
   }

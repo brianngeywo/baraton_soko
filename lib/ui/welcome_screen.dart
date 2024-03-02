@@ -30,6 +30,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               height: constraints.maxHeight,
               width: constraints.maxWidth,
               child: ListView(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
                 children: [
                   WelcomeScreenGreetingCard(constraints: constraints),
                   Divider(),
