@@ -2,7 +2,7 @@ import 'package:baraton_soko/databases/users_db.dart';
 import 'package:baraton_soko/models/user_model.dart';
 
 class ReadSingleUserUseCase {
-  final UsersDataBase _userDatabase;
+  final UsersDatabase _userDatabase;
   ReadSingleUserUseCase(this._userDatabase);
 
   Future<UserModel> call({required String id}) async {

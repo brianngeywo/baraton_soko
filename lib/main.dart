@@ -8,15 +8,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-//initialize firebase and getit
-// void main() {
-//   runApp(const MyApp());
-// }
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  GetItInjectionContainer.registerDependencies();
+  await GetItInjectionContainer().registerDependencies(); // Await if it's async
   runApp(const MyApp());
 }
 

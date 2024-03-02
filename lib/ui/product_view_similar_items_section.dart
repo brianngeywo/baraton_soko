@@ -1,13 +1,16 @@
-import 'package:baraton_soko/databases/like_dislike_db.dart';
+import 'package:baraton_soko/models/product_model.dart';
+import 'package:baraton_soko/providers/categories_provider.dart';
+import 'package:baraton_soko/providers/products_provider.dart';
 import 'package:baraton_soko/ui/product_view_page.dart';
-import 'package:baraton_soko/use_cases/like_dislike/read_product_likes.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductViewSimilarItemsSection extends StatelessWidget {
+  final String categoryId;
+
   const ProductViewSimilarItemsSection({
     super.key,
+    required this.categoryId,
   });
 
   @override
@@ -22,17 +25,19 @@ class ProductViewSimilarItemsSection extends StatelessWidget {
             style: TextStyle(),
           ),
           const SizedBox(height: 10),
-          FutureBuilder(
-              future: ReadProductLikesUseCase(LikeDisLikeDatabase()).readProductLikes(productId: "productId"),
+          FutureBuilder<List<ProductModel>>(
+              future: context.read<CategoriesProvider>().fetchCategoryProducts(categoryId),
+              initialData: context.read<ProductsProvider>().products,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data != null) {
-                    return           SizedBox(
+                    var products = snapshot.data;
+                    return SizedBox(
                       height: 215,
                       child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
-                        itemCount: 4,
+                        itemCount: products.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Card(
                             elevation: 0,
@@ -40,7 +45,13 @@ class ProductViewSimilarItemsSection extends StatelessWidget {
                             child: Column(
                               children: [
                                 Container(
-                                  color: Colors.grey.shade200,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: DecorationImage(
+                                      image: NetworkImage(products[index].imageUrl),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                   height: 140,
                                   width: 150,
                                 ),
@@ -49,10 +60,13 @@ class ProductViewSimilarItemsSection extends StatelessWidget {
                                   width: 150,
                                   child: TextButton(
                                     style: TextButton.styleFrom(
-                                      // backgroundColor: Colors.blue.shade900,
-                                      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                    ),
-                                    onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const ProductViewPage())),
+                                        // backgroundColor: Colors.blue.shade900,
+                                        // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                        ),
+                                    onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                        builder: (context) => ProductViewPage(
+                                              product: products[index],
+                                            ))),
                                     child: const Padding(
                                       padding: EdgeInsets.all(4.0),
                                       child: Text(
@@ -71,6 +85,8 @@ class ProductViewSimilarItemsSection extends StatelessWidget {
                   } else {
                     return CircularProgressIndicator();
                   }
+                } else {
+                  return CircularProgressIndicator();
                 }
               }),
         ],

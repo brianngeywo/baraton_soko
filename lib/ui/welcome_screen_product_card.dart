@@ -1,15 +1,24 @@
+import 'package:baraton_soko/models/like_dislike_model.dart';
+import 'package:baraton_soko/models/product_model.dart';
+import 'package:baraton_soko/providers/like_dislikes_provider.dart';
 import 'package:baraton_soko/ui/product_view_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WelcomeScreenProductCard extends StatelessWidget {
+  final ProductModel product;
   final BoxConstraints constraints;
+
   const WelcomeScreenProductCard({
-    super.key, required this.constraints,
+    super.key,
+    required this.constraints,
+    required this.product,
   });
 
   @override
   Widget build(BuildContext context) {
+    var likes = context.read<LikeDislikesProvider>().readProductLikes(product.id);
     return SizedBox(
       // width: constraints.maxWidth * 0.4,
       // height: 200,
@@ -18,9 +27,18 @@ class WelcomeScreenProductCard extends StatelessWidget {
         children: <Widget>[
           MaterialButton(
             padding: EdgeInsets.all(0),
-            onPressed: () => Navigator.of(context).push(CupertinoPageRoute(builder: (context) => const ProductViewPage())),
+            onPressed: () => Navigator.of(context).push(CupertinoPageRoute(
+                builder: (context) => ProductViewPage(
+                      product: product,
+                    ))),
             child: Container(
-              color: Colors.grey.shade200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                  image: NetworkImage(product.imageUrl),
+                  fit: BoxFit.cover,
+                ),
+              ),
               height: constraints.maxHeight * 0.3,
               width: constraints.maxWidth * 0.4,
               margin: EdgeInsets.all(8),
@@ -36,12 +54,28 @@ class WelcomeScreenProductCard extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("Nike"),
+                  child: Text(
+                    product.title,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
                 TextButton.icon(
-                  onPressed: () {},
+                  onPressed: () => context.read<LikeDislikesProvider>().likeDislikePost(productId: product.id, isLike: true),
                   icon: const Icon(Icons.thumb_up),
-                  label: const Text("100"),
+                  label: FutureBuilder<List<LikeDislikeTable>>(
+                      future: likes,
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasData) {
+                          if (snapshot.data != null) {
+                            var likes = snapshot.data.length;
+                            return Text(likes.toString());
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      }),
                 ),
               ],
             ),

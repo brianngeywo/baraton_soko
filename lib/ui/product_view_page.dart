@@ -1,9 +1,13 @@
 import 'package:baraton_soko/models/product_model.dart';
+import 'package:baraton_soko/providers/like_dislikes_provider.dart';
+import 'package:baraton_soko/ui/product_view_page_vendor_view_row.dart';
 import 'package:baraton_soko/ui/product_view_similar_items_section.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductViewPage extends StatefulWidget {
   final ProductModel product;
+
   const ProductViewPage({super.key, required this.product});
 
   @override
@@ -40,13 +44,13 @@ class _ProductViewPageState extends State<ProductViewPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     TextButton.icon(
-                      onPressed: () {},
+                      onPressed: () => context.read<LikeDislikesProvider>().likeDislikePost(productId: widget.product.id, isLike: true),
                       icon: const Icon(Icons.thumb_up),
                       label: const Text("Upvote"),
                     ),
                     const SizedBox(width: 10),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () => context.read<LikeDislikesProvider>().likeDislikePost(productId: widget.product.id, isLike: false),
                       icon: const Icon(Icons.thumb_down_alt_outlined),
                     ),
                   ],
@@ -120,29 +124,18 @@ class _ProductViewPageState extends State<ProductViewPage> {
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                color: Colors.grey.shade200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  image: DecorationImage(
+                    image: NetworkImage(widget.product.imageUrl),
+                    fit: BoxFit.cover,
+                  ),
+                ),
                 height: constraints.maxHeight * 0.3,
                 width: double.infinity,
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.grey.shade300,
-                      radius: 20,
-                    ),
-                  ),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Pressy stores"),
-                      Text("Baraton Hostels"),
-                    ],
-                  ),
-                ],
-              ),
-              const Padding(
+              ProductViewPageVendorViewRow(product: widget.product),
+              Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,11 +144,11 @@ class _ProductViewPageState extends State<ProductViewPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Product title",
+                          widget.product.title,
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                         ),
                         Text(
-                          "KES 800.00",
+                          "KES ${widget.product.price}",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -174,8 +167,8 @@ class _ProductViewPageState extends State<ProductViewPage> {
                   ],
                 ),
               ),
-              ProductViewSimilarItemsSection(),
-              SizedBox(height: 70),
+               ProductViewSimilarItemsSection(categoryId: widget.product.categoryId),
+              const SizedBox(height: 70),
             ],
           ),
         );

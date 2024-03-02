@@ -7,8 +7,9 @@ class ReadSingleProductUseCase {
 
   ReadSingleProductUseCase(this._database);
 
-Future<ProductModel> getSingleProduct({required String productId}) async {
-  final result = await _database.getSingleProduct(productId: productId);
-  var product = ProductModel.fromMap(result.data()!);
-  return product;
+  Future<ProductModel> getSingleProduct({required String productId}) async {
+    final result = await _database.getSingleProduct(productId: productId);
+    var product = ProductModel.fromMap(result.data()!);
+    return product;
+  }
 }

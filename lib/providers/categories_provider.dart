@@ -12,6 +12,14 @@ class CategoriesProvider extends ChangeNotifier {
         _allcategoriesUseCase = allcategoriesUseCase,
         _categoryProductsUseCase = categoryProductsUseCase;
   List<CategoryModel> _categories = [];
+  CategoryModel? _selectedCategory;
+
+  CategoryModel get selectedCategory => _selectedCategory!;
+
+  set selectedCategory(CategoryModel value) {
+    _selectedCategory = value;
+    notifyListeners();
+  }
 
   List<CategoryModel> get categories => _categories;
   final ReadAllcategoriesUseCase _allcategoriesUseCase;
@@ -23,6 +31,10 @@ class CategoriesProvider extends ChangeNotifier {
     notifyListeners();
     return response;
   }
-
+selectCategory(CategoryModel category) async {
+    await fetchCategoryProducts(category.id);
+    _selectedCategory = category;
+    notifyListeners();
+  }
   Future<List<ProductModel>> fetchCategoryProducts(String categoryId) async => await _categoryProductsUseCase.getAllSingleCategoryProducts(category: categoryId);
 }

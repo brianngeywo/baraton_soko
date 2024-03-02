@@ -19,8 +19,7 @@ class ProductsProvider with ChangeNotifier {
   final ReadAllProductsUseCase _readAllProductsUseCase;
   final ReadAllProductsSortByLikesUseCase _readAllProductsSortByLikesUseCase;
   final ReadAllLatestProductsSortByCreatedUseCase _readAllLatestProductsSortByCreatedUseCase;
-  final ReadProductLikesUseCase _readProductLikesUseCase;
-  final ReadProductDislikesUseCase _readProductDislikesUseCase;
+
   final ReadSingleProductUseCase _readSingleProductUseCase;
 
   Future<List<ProductModel>> getAllProducts() async {
@@ -36,9 +35,7 @@ class ProductsProvider with ChangeNotifier {
 
   Future<ProductModel> getSingleProduct(String productId) async => await _readSingleProductUseCase.getSingleProduct(productId: productId);
 
-  Future<List<LikeDislikeTable>> readProductLikes(String productId) async => await _readProductLikesUseCase.readProductLikes(productId: productId);
 
-  Future<List<LikeDislikeTable>> readProductDislikes(String productId) async => await _readProductDislikesUseCase.readProductDislikes(productId: productId);
 
   void clearProducts() {
     _products = [];
@@ -49,14 +46,10 @@ class ProductsProvider with ChangeNotifier {
     required ReadAllProductsUseCase readAllProductsUseCase,
     required ReadAllProductsSortByLikesUseCase readAllProductsSortByLikesUseCase,
     required ReadAllLatestProductsSortByCreatedUseCase readAllLatestProductsSortByCreatedUseCase,
-    required ReadProductLikesUseCase readProductLikesUseCase,
-    required ReadProductDislikesUseCase readProductDislikesUseCase,
     required ReadSingleProductUseCase readSingleProductUseCase,
   })  : _products = [],
         _readAllProductsUseCase = readAllProductsUseCase,
         _readAllProductsSortByLikesUseCase = readAllProductsSortByLikesUseCase,
         _readAllLatestProductsSortByCreatedUseCase = readAllLatestProductsSortByCreatedUseCase,
-        _readProductLikesUseCase = readProductLikesUseCase,
-        _readProductDislikesUseCase = readProductDislikesUseCase,
         _readSingleProductUseCase = readSingleProductUseCase;
 }

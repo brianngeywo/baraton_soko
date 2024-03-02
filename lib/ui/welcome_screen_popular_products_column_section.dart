@@ -1,7 +1,10 @@
+import 'package:baraton_soko/providers/categories_provider.dart';
 import 'package:baraton_soko/ui/my_home_page.dart';
-import 'package:baraton_soko/ui/welcome_screen_product_card.dart';
+import 'package:baraton_soko/ui/welcome_screen_products_categories_row_section.dart';
+import 'package:baraton_soko/ui/welcome_screen_selected_category_products.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WelcomeScreenProductsColumnSection extends StatelessWidget {
   final BoxConstraints constraints;
@@ -15,6 +18,7 @@ class WelcomeScreenProductsColumnSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final categoryId = context.read<CategoriesProvider>().selectedCategory.id;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -28,46 +32,17 @@ class WelcomeScreenProductsColumnSection extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-            TextButton(onPressed: () => Navigator.of(context).push(CupertinoPageRoute(builder: (context) => const MyHomePage())), child: Text(
-              "View all",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),)
+            TextButton(
+              onPressed: () => Navigator.of(context).push(CupertinoPageRoute(builder: (context) => const MyHomePage())),
+              child: Text(
+                "View all",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            )
           ],
         ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("Food"),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("Jackets"),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("Shoes"),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          width: constraints.maxWidth,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                WelcomeScreenProductCard(constraints: constraints),
-                WelcomeScreenProductCard(constraints: constraints),
-                WelcomeScreenProductCard(constraints: constraints),
-              ],
-            ),
-          ),
-        )
+        WelcomeScreenProductsCategoriesRowSection(),
+        WelcomeScreenSelectedCategoryProducts(constraints: constraints, categoryId: categoryId )
       ],
     );
   }

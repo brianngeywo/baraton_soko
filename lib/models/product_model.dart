@@ -4,14 +4,21 @@ class ProductModel {
   final String description;
   final String categoryId;
   final String imageUrl;
+  final String vendorId;
+  final String price;
 
-  const ProductModel({
+  ProductModel({
     required this.id,
     required this.title,
     required this.description,
     required this.categoryId,
     required this.imageUrl,
+    required this.vendorId,
+    required this.price,
   });
+
+
+
 
   Map<String, dynamic> toMap() {
     return {
@@ -20,6 +27,8 @@ class ProductModel {
       'description': this.description,
       'categoryId': this.categoryId,
       'imageUrl': this.imageUrl,
+      'vendorId': this.vendorId,
+      'price': this.price,
     };
   }
 
@@ -30,6 +39,8 @@ class ProductModel {
       description: map['description'],
       categoryId: map['categoryId'],
       imageUrl: map['imageUrl'],
+      vendorId: map['vendorId'],
+      price: map['price'],
     );
   }
 }

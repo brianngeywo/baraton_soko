@@ -1,22 +1,22 @@
 class CategoryModel {
-  final String categoryId;
+  final String id;
   final String name;
 
   const CategoryModel({
-    required this.categoryId,
+    required this.id,
     required this.name,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'categoryId': this.categoryId,
+      'id': this.id,
       'name': this.name,
     };
   }
 
   factory CategoryModel.fromMap(Map<String, dynamic> map) {
     return CategoryModel(
-      categoryId: map['categoryId'],
+      id: map['id'],
       name: map['name'],
     );
   }
