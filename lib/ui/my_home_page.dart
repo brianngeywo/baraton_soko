@@ -1,6 +1,5 @@
 import 'package:baraton_soko/models/product_model.dart';
 import 'package:baraton_soko/providers/products_provider.dart';
-import 'package:baraton_soko/ui/my_home_page_product_card.dart';
 import 'package:baraton_soko/ui/my_home_page_product_card_like_dislike_section.dart';
 import 'package:baraton_soko/ui/my_home_page_product_card_vendor_infor_header_section.dart';
 import 'package:baraton_soko/ui/product_view_page.dart';
@@ -77,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
                                       image: DecorationImage(
-                                        image: NetworkImage( snapshot.data[index].imageUrl),
+                                        image: NetworkImage(snapshot.data[index].imageUrl),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -90,9 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      MyHomePageProductCardLikeDislikeSection(
-                                        productId:  snapshot.data[index].id,
-                                      ),
+                                      MyHomePageProductCardLikeDislikeSection(productId: snapshot.data[index].id),
                                       TextButton(
                                         style: TextButton.styleFrom(
                                           backgroundColor: Colors.blue.shade900,

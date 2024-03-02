@@ -1,4 +1,4 @@
-import 'package:baraton_soko/databases/constants.dart';
+import 'package:baraton_soko/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductsDatabase {
@@ -11,4 +11,10 @@ class ProductsDatabase {
   getAllProductsSortByLikes() async {}
 
   getAllLatestProductsSortByCreated() async {}
+
+  Future<void> sendProductrequest({required String productId, required String userId}) => productRequestsCollection.doc("$userId$productId").set({
+        'id': "$userId$productId",
+        'productId': productId,
+        'userId': userId,
+      });
 }

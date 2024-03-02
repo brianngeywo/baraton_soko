@@ -1,13 +1,11 @@
-import 'package:baraton_soko/models/category_model.dart';
 import 'package:baraton_soko/models/like_dislike_model.dart';
 import 'package:baraton_soko/models/product_model.dart';
-import 'package:baraton_soko/providers/categories_provider.dart';
 import 'package:baraton_soko/providers/like_dislikes_provider.dart';
 import 'package:baraton_soko/providers/products_provider.dart';
+import 'package:baraton_soko/ui/local_data.dart';
 import 'package:baraton_soko/ui/my_home_page.dart';
 import 'package:baraton_soko/ui/product_view_page.dart';
 import 'package:baraton_soko/ui/welcome_screen_greeting_card.dart';
-import 'package:baraton_soko/ui/welcome_screen_product_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -56,14 +54,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             padding: EdgeInsets.all(8.0),
                             child: Text(
                               "Latest products",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           TextButton(
                             onPressed: () => Navigator.of(context).push(CupertinoPageRoute(builder: (context) => const MyHomePage())),
                             child: const Text(
                               "View all",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           )
                         ],
@@ -130,17 +132,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                     itemCount: products.length,
                                     itemBuilder: (BuildContext context, int index) {
                                       return SizedBox(
-                                        width: constraints.maxWidth * 0.4,
+                                        width: constraints.maxWidth * 0.45,
                                         // height: 200,
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
                                             MaterialButton(
                                               padding: EdgeInsets.all(0),
-                                              onPressed: () => Navigator.of(context).push(CupertinoPageRoute(
-                                                  builder: (context) => ProductViewPage(
-                                                    product: products[index],
-                                                  ))),
+                                              onPressed: () => Navigator.of(context)
+                                                  .push(CupertinoPageRoute(builder: (context) => ProductViewPage(product: products[index]))),
                                               child: Container(
                                                 decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(10),
@@ -150,12 +150,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                                   ),
                                                 ),
                                                 height: 150,
-                                                width: constraints.maxWidth * 0.4,
+                                                // width: constraints.maxWidth * 0.4,
                                                 margin: EdgeInsets.all(8),
                                               ),
                                             ),
                                             SizedBox(
-                                              width: constraints.maxWidth * 0.4,
+                                              width: constraints.maxWidth * 0.45,
                                               // height: 200,
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.min,
@@ -170,9 +170,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                                     ),
                                                   ),
                                                   TextButton.icon(
-                                                    onPressed: () => context.read<LikeDislikesProvider>().likeDislikePost(productId: products[index].id, isLike: true),
+                                                    onPressed: () => context
+                                                        .read<LikeDislikesProvider>()
+                                                        .likeProduct(productId: products[index].id, userId: firebaseAuth.currentUser!.uid),
                                                     icon: const Icon(Icons.thumb_up),
-                                                    label: FutureBuilder<List<LikeDislikeTable>>(
+                                                    label: FutureBuilder<List<LikeDislikeModel>>(
                                                         future: context.read<LikeDislikesProvider>().readProductLikes(products[index].id),
                                                         builder: (BuildContext context, AsyncSnapshot snapshot) {
                                                           if (snapshot.hasData) {

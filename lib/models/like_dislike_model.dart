@@ -1,10 +1,10 @@
-class LikeDislikeTable {
+class LikeDislikeModel {
   final String id;
   final String userId;
   final String productId;
   final bool liked;
 
-  const LikeDislikeTable({
+  const LikeDislikeModel({
     required this.id,
     required this.userId,
     required this.productId,
@@ -20,8 +20,8 @@ class LikeDislikeTable {
     };
   }
 
-  factory LikeDislikeTable.fromMap(Map<String, dynamic> map) {
-    return LikeDislikeTable(
+  factory LikeDislikeModel.fromMap(Map<String, dynamic> map) {
+    return LikeDislikeModel(
       id: map['id'],
       userId: map['userId'],
       productId: map['productId'],

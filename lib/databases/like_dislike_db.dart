@@ -1,4 +1,5 @@
-import 'package:baraton_soko/databases/constants.dart';
+import 'package:baraton_soko/constants.dart';
+import 'package:baraton_soko/models/like_dislike_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LikeDisLikeDatabase {
@@ -16,36 +17,38 @@ class LikeDisLikeDatabase {
 
   dislikeProduct({required String productId, required String userId}) async {
     //check if there is anothe document with same productId and userId
-    await likeDislikesCollection.where("productId", isEqualTo: productId).where("userId", isEqualTo: userId).get().then((value) {
-      if (value.docs.isEmpty) {
+    // await likeDislikesCollection.where("productId", isEqualTo: productId).where("userId", isEqualTo: userId).get().then((value) {
+    //   if (value.docs.isEmpty) {
         // dislike a product
-        likeDislikesCollection.add({
+        likeDislikesCollection.doc("$userId+$productId").set({
+          "id":"$userId$productId",
           "productId": productId,
           "userId": userId,
           "liked": false,
-        });
-      } else {
-        // remove the dislike
-        likeDislikesCollection.doc(value.docs.first.id).delete();
-      }
-    });
+        })
+    //   } else {
+    //     // remove the dislike
+    //     likeDislikesCollection.doc(value.docs.first.id).delete();
+    //   }
+    // });
   }
 
   likeProduct({required String productId, required String userId}) async {
     //check if there is anothe document with same productId and userId
-    await likeDislikesCollection.where("productId", isEqualTo: productId).where("userId", isEqualTo: userId).get().then((value) {
-      if (value.docs.isEmpty) {
+    // await likeDislikesCollection.where("productId", isEqualTo: productId).where("userId", isEqualTo: userId).get().then((value) {
+    //   if (value.docs.isEmpty) {
         // like a product
-        likeDislikesCollection.add({
+        likeDislikesCollection.doc("$userId+$productId").set({
+          "id":"$userId$productId",
           "productId": productId,
           "userId": userId,
           "liked": true,
         });
-      } else {
-        // remove the like
-        likeDislikesCollection.doc(value.docs.first.id).delete();
-      }
-    });
+      // } else {
+      //   // remove the like
+      //   likeDislikesCollection.doc(value.docs.first.id).delete();
+      // }
+    // });
   }
 
   Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> readProductLikes({required String productId}) async {

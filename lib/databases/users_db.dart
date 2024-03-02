@@ -1,4 +1,4 @@
-import 'package:baraton_soko/databases/constants.dart';
+import 'package:baraton_soko/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UsersDatabase {

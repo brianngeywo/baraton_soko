@@ -20,7 +20,7 @@ class WelcomeScreenProductCard extends StatelessWidget {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return SizedBox(
-          width: constraints.maxWidth * 0.4,
+          width: constraints.maxWidth * 0.45,
           // height: 200,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,12 +40,12 @@ class WelcomeScreenProductCard extends StatelessWidget {
                     ),
                   ),
                   height: constraints.maxHeight * 0.3,
-                  width: constraints.maxWidth * 0.4,
+                  width: constraints.maxWidth * 0.45,
                   margin: EdgeInsets.all(8),
                 ),
               ),
               SizedBox(
-                width: constraints.maxWidth * 0.4,
+                width: constraints.maxWidth * 0.45,
                 // height: 200,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -62,7 +62,7 @@ class WelcomeScreenProductCard extends StatelessWidget {
                     TextButton.icon(
                       onPressed: () => context.read<LikeDislikesProvider>().likeDislikePost(productId: product.id, isLike: true),
                       icon: const Icon(Icons.thumb_up),
-                      label: FutureBuilder<List<LikeDislikeTable>>(
+                      label: FutureBuilder<List<LikeDislikeModel>>(
                           future: likes,
                           builder: (BuildContext context, AsyncSnapshot snapshot) {
                             if (snapshot.hasData) {

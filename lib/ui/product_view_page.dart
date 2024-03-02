@@ -153,7 +153,7 @@ class _ProductViewPageState extends State<ProductViewPage> {
                         ),
                         Text(
                           "KES ${widget.product.price}",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                       ],
                     ),
