@@ -95,13 +95,29 @@ class _MyHomePageState extends State<MyHomePage> {
                                           backgroundColor: Colors.blue.shade900,
                                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                                         ),
-                                        onPressed: () {},
-                                        child: const Padding(
+                                        onPressed: () => context.read<ProductsProvider>().requestProduct(productId: snapshot.data[index].id),
+                                        child: Padding(
                                           padding: EdgeInsets.all(4.0),
-                                          child: Text(
-                                            "Request",
-                                            style: TextStyle(color: Colors.white),
-                                          ),
+                                          child: StreamBuilder<int>(
+                                              stream: context.read<ProductsProvider>().checkProductRequestStatus(productId: snapshot.data[index].id),
+                                              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                                if (snapshot.hasData) {
+                                                  if (snapshot.data >= 1) {
+                                                    return Text(
+                                                      "Requested",
+                                                      style: TextStyle(color: Colors.white),
+                                                    );
+                                                  } else {
+                                                    return Text(
+                                                      "Request",
+                                                      style: TextStyle(color: Colors.white),
+                                                    );
+                                                  }
+                                                } else {
+                                                  return SizedBox(height: 20, width: 20, child: CircularProgressIndicator());
+                                                  ();
+                                                }
+                                              }),
                                         ),
                                       ),
                                     ],
@@ -113,10 +129,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         },
                       );
                     } else {
-                      return const CircularProgressIndicator();
+                      return SizedBox(height: 20, width: 20, child: CircularProgressIndicator());
                     }
                   } else {
-                    return const CircularProgressIndicator();
+                    return SizedBox(height: 20, width: 20, child: CircularProgressIndicator());
                   }
                 }),
           ],

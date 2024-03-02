@@ -47,10 +47,16 @@ class ProductViewPageVendorViewRow extends StatelessWidget {
                 ],
               );
             } else {
-              return CircularProgressIndicator();
+              return SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator());();
             }
           } else {
-            return CircularProgressIndicator();
+            return SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator());();
           }
         });
   }

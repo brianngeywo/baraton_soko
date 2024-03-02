@@ -91,10 +91,16 @@
 //                     }).toList(),
 //                   );
 //                 } else {
-//                   return CircularProgressIndicator();
+//                   return    return SizedBox(
+//                                     height: 20,
+//                                     width: 20,
+//                                     child: CircularProgressIndicator());();
 //                 }
 //               } else {
-//                 return CircularProgressIndicator();
+//                 return    return SizedBox(
+//                                     height: 20,
+//                                     width: 20,
+//                                     child: CircularProgressIndicator());();
 //               }
 //             }),
 //         Builder(builder: (context) {
@@ -122,10 +128,16 @@
 //                               },
 //                             );
 //                           } else {
-//                             return CircularProgressIndicator();
+//                             return    return SizedBox(
+//                                     height: 20,
+//                                     width: 20,
+//                                     child: CircularProgressIndicator());();
 //                           }
 //                         } else {
-//                           return CircularProgressIndicator();
+//                           return    return SizedBox(
+//                                     height: 20,
+//                                     width: 20,
+//                                     child: CircularProgressIndicator());();
 //                         }
 //                       }),
 //                 )

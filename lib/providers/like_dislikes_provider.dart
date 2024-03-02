@@ -37,7 +37,7 @@ class LikeDislikesProvider with ChangeNotifier {
   //   notifyListeners();
   // }
   //
-  Future<void> likeProduct({
+  Future<String> likeProduct({
     required String productId,
     required String userId,
   }) async =>

@@ -1,8 +1,6 @@
-import 'package:baraton_soko/models/like_dislike_model.dart';
 import 'package:baraton_soko/models/product_model.dart';
 import 'package:baraton_soko/providers/like_dislikes_provider.dart';
 import 'package:baraton_soko/providers/products_provider.dart';
-import 'package:baraton_soko/ui/local_data.dart';
 import 'package:baraton_soko/ui/my_home_page.dart';
 import 'package:baraton_soko/ui/product_view_page.dart';
 import 'package:baraton_soko/ui/welcome_screen_greeting_card.dart';
@@ -44,8 +42,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
-                    // physics: const NeverScrollableScrollPhysics(),
-                    // shrinkWrap: true,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,7 +49,122 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           const Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text(
-                              "Latest products",
+                              "Latest Products",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(
+                        height: 220,
+                        // width: 200,
+                        child: FutureBuilder<List<ProductModel>>(
+                            future: context.read<ProductsProvider>().getAllProducts(),
+                            initialData: context.read<ProductsProvider>().products,
+                            builder: (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasData) {
+                                print(snapshot.data.toString());
+                                if (snapshot.data != null) {
+                                  List<ProductModel> products = snapshot.data;
+                                  return ListView.builder(
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: products.take(2).length,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return SizedBox(
+                                        width: constraints.maxWidth * 0.5,
+                                        // height: 200,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            MaterialButton(
+                                              padding: EdgeInsets.all(0),
+                                              onPressed: () => Navigator.of(context)
+                                                  .push(CupertinoPageRoute(builder: (context) => ProductViewPage(product: products[index]))),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(products[index].imageUrl),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                                height: 150,
+                                                // width: constraints.maxWidth * 0.4,
+                                                margin: EdgeInsets.all(8),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: constraints.maxWidth * 0.5,
+                                              // height: 200,
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: Text(
+                                                      products[index].title,
+                                                      style: TextStyle(fontWeight: FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                  TextButton.icon(
+                                                    onPressed: () => context
+                                                        .read<LikeDislikesProvider>()
+                                                        .likeProduct(productId: products[index].id, userId: "upAplozfZgXXapAV3nxM"),
+                                                    icon: const Icon(Icons.thumb_up),
+                                                    label: StreamBuilder<int>(
+                                                        stream:
+                                                            context.read<LikeDislikesProvider>().getProductLikesCount(productId: products[index].id),
+                                                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                                          if (snapshot.hasData) {
+                                                            print(snapshot.data);
+                                                            if (snapshot.data != null) {
+                                                              var likes = snapshot.data;
+                                                              return Text(likes.toString());
+                                                            } else {
+                                                              return SizedBox(height: 20, width: 20, child: CircularProgressIndicator());
+                                                            }
+                                                          } else {
+                                                            return SizedBox(height: 20, width: 20, child: CircularProgressIndicator());
+                                                          }
+                                                        }),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  return SizedBox(height: 20, width: 20, child: CircularProgressIndicator());
+                                }
+                              } else {
+                                return SizedBox(height: 20, width: 20, child: CircularProgressIndicator());
+                              }
+                            }),
+                      ),
+                    ],
+                  ),
+                  const Divider(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              "All Products",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -108,10 +219,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       //             }).toList(),
                       //           );
                       //         } else {
-                      //           return const CircularProgressIndicator();
+                      //           return SizedBox(
+                      //               height: 20,
+                      //               width: 20,
+                      //               child: CircularProgressIndicator());
                       //         }
                       //       } else {
-                      //         return const CircularProgressIndicator();
+                      //         return SizedBox(
+                      //               height: 20,
+                      //               width: 20,
+                      //               child: CircularProgressIndicator());
                       //       }
                       //     }),
                       SizedBox(
@@ -126,10 +243,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                 if (snapshot.data != null) {
                                   List<ProductModel> products = snapshot.data;
                                   return ListView.builder(
-                                    physics: const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
+                                    // physics: const NeverScrollableScrollPhysics(),
+                                    // shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: products.length,
+                                    itemCount: products.reversed.length,
                                     itemBuilder: (BuildContext context, int index) {
                                       return SizedBox(
                                         width: constraints.maxWidth * 0.45,
@@ -172,20 +289,22 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                                   TextButton.icon(
                                                     onPressed: () => context
                                                         .read<LikeDislikesProvider>()
-                                                        .likeProduct(productId: products[index].id, userId: firebaseAuth.currentUser!.uid),
+                                                        .likeProduct(productId: products[index].id, userId: "upAplozfZgXXapAV3nxM"),
                                                     icon: const Icon(Icons.thumb_up),
-                                                    label: FutureBuilder<List<LikeDislikeModel>>(
-                                                        future: context.read<LikeDislikesProvider>().readProductLikes(products[index].id),
+                                                    label: StreamBuilder<int>(
+                                                        stream:
+                                                            context.read<LikeDislikesProvider>().getProductLikesCount(productId: products[index].id),
                                                         builder: (BuildContext context, AsyncSnapshot snapshot) {
                                                           if (snapshot.hasData) {
+                                                            print(snapshot.data);
                                                             if (snapshot.data != null) {
-                                                              var likes = snapshot.data.length;
+                                                              var likes = snapshot.data;
                                                               return Text(likes.toString());
                                                             } else {
-                                                              return CircularProgressIndicator();
+                                                              return SizedBox(height: 20, width: 20, child: CircularProgressIndicator());
                                                             }
                                                           } else {
-                                                            return CircularProgressIndicator();
+                                                            return SizedBox(height: 20, width: 20, child: CircularProgressIndicator());
                                                           }
                                                         }),
                                                   ),
@@ -198,20 +317,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                     },
                                   );
                                 } else {
-                                  return const CircularProgressIndicator();
+                                  return SizedBox(height: 20, width: 20, child: CircularProgressIndicator());
                                 }
                               } else {
-                                return const CircularProgressIndicator();
+                                return SizedBox(height: 20, width: 20, child: CircularProgressIndicator());
                               }
                             }),
                       ),
                     ],
                   ),
                   //   Divider(),
-                  //   WelcomeScreenProductsColumnSection(
-                  //     constraints: constraints,
-                  //     title: 'Popular products',
-                  //   ),
                 ],
               ),
             );

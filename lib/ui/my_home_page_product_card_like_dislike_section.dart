@@ -22,10 +22,10 @@ class MyHomePageProductCardLikeDislikeSection extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           TextButton.icon(
-            onPressed: () => context.read<LikeDislikesProvider>().likeProduct(productId: productId, userId: firebaseAuth.currentUser!.uid),
+            onPressed: () => context.read<LikeDislikesProvider>().likeProduct(productId: productId, userId: "jdsagfewyuifgw3"),
             icon: Icon(
               Icons.thumb_up,
-              color: Colors.black,
+              color: Colors.blue,
             ),
             label: StreamBuilder<int>(
                 stream: context.read<LikeDislikesProvider>().getProductLikesCount(productId: productId),
@@ -35,15 +35,15 @@ class MyHomePageProductCardLikeDislikeSection extends StatelessWidget {
           ),
           SizedBox(width: 10),
           TextButton.icon(
-            onPressed: () {},
+            onPressed: () => context.read<LikeDislikesProvider>().dislikeProduct(productId: productId, userId: "jdsagfewyuifgw3"),
             icon: Icon(
-              Icons.thumb_down,
-              color: Colors.black,
+              Icons.thumb_down_alt_outlined,
+              color: Colors.blue,
             ),
             label: StreamBuilder<int>(
                 stream: context.read<LikeDislikesProvider>().getProductDisLikesCount(productId: productId),
                 builder: (context, snapshot) {
-                  return Text("${snapshot.data.toString()}");
+                  return Text("Upvotes ${snapshot.data.toString()}");
                 }),
           ),
         ],

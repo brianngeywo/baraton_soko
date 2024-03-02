@@ -1,7 +1,5 @@
-import 'package:baraton_soko/models/like_dislike_model.dart';
 import 'package:baraton_soko/models/product_model.dart';
-import 'package:baraton_soko/use_cases/like_dislike/read_product_dislikes.dart';
-import 'package:baraton_soko/use_cases/like_dislike/read_product_likes.dart';
+import 'package:baraton_soko/use_cases/product_request/request_product.dart';
 import 'package:baraton_soko/use_cases/products/read_all_products.dart';
 import 'package:baraton_soko/use_cases/products/read_single_product.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +17,9 @@ class ProductsProvider with ChangeNotifier {
   final ReadAllProductsUseCase _readAllProductsUseCase;
   final ReadAllProductsSortByLikesUseCase _readAllProductsSortByLikesUseCase;
   final ReadAllLatestProductsSortByCreatedUseCase _readAllLatestProductsSortByCreatedUseCase;
-
   final ReadSingleProductUseCase _readSingleProductUseCase;
+  final RequestProductUseCase _requestProductUseCase;
+  final CheckProductRequestStatusUseCase _checkProductRequestStatusUseCase;
 
   Future<List<ProductModel>> getAllProducts() async {
     final result = await _readAllProductsUseCase.getAllProducts();
@@ -32,11 +31,14 @@ class ProductsProvider with ChangeNotifier {
 
   Future<List<ProductModel>> getAllProductsSortByLikes() async => await _readAllProductsSortByLikesUseCase.getAllProductsSortByLikes();
 
-  Future<List<ProductModel>> getAllLatestProductsSortByCreated() async => await _readAllLatestProductsSortByCreatedUseCase.getAllLatestProductsSortByCreated();
+  Future<List<ProductModel>> getAllLatestProductsSortByCreated() async =>
+      await _readAllLatestProductsSortByCreatedUseCase.getAllLatestProductsSortByCreated();
 
   Future<ProductModel> getSingleProduct(String productId) async => await _readSingleProductUseCase.getSingleProduct(productId: productId);
 
+  Future<String> requestProduct({required String productId}) async => await _requestProductUseCase.call(productId: productId);
 
+  Stream<int> checkProductRequestStatus({required productId})  =>  _checkProductRequestStatusUseCase.call(productId: productId);
 
   void clearProducts() {
     _products = [];
@@ -48,8 +50,12 @@ class ProductsProvider with ChangeNotifier {
     required ReadAllProductsSortByLikesUseCase readAllProductsSortByLikesUseCase,
     required ReadAllLatestProductsSortByCreatedUseCase readAllLatestProductsSortByCreatedUseCase,
     required ReadSingleProductUseCase readSingleProductUseCase,
+    required RequestProductUseCase requestProductUseCase,
+    required CheckProductRequestStatusUseCase checkProductRequestStatusUseCase,
   })  : _products = [],
         _readAllProductsUseCase = readAllProductsUseCase,
+        _requestProductUseCase = requestProductUseCase,
+        _checkProductRequestStatusUseCase = checkProductRequestStatusUseCase,
         _readAllProductsSortByLikesUseCase = readAllProductsSortByLikesUseCase,
         _readAllLatestProductsSortByCreatedUseCase = readAllLatestProductsSortByCreatedUseCase,
         _readSingleProductUseCase = readSingleProductUseCase;

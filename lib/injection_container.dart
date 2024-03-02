@@ -13,6 +13,7 @@ import 'package:baraton_soko/use_cases/like_dislike/like_product.dart';
 import 'package:baraton_soko/use_cases/like_dislike/read_product_dislikes.dart';
 import 'package:baraton_soko/use_cases/like_dislike/read_product_likes.dart';
 import 'package:baraton_soko/use_cases/like_dislike/stream_product_likes_count.dart';
+import 'package:baraton_soko/use_cases/product_request/request_product.dart';
 import 'package:baraton_soko/use_cases/products/read_all_products.dart';
 import 'package:baraton_soko/use_cases/products/read_single_product.dart';
 import 'package:baraton_soko/use_cases/users/create_user.dart';
@@ -37,10 +38,12 @@ class GetItInjectionContainer {
             readAllProductsUseCase: getIt(),
             readAllProductsSortByLikesUseCase: getIt(),
             readAllLatestProductsSortByCreatedUseCase: getIt(),
-            readSingleProductUseCase: getIt(),
+            readSingleProductUseCase: getIt(), requestProductUseCase: getIt(), checkProductRequestStatusUseCase: getIt(),
           ))
       ..registerLazySingleton<ReadAllProductsUseCase>(() => ReadAllProductsUseCase(getIt()))
       ..registerLazySingleton<ReadAllProductsSortByLikesUseCase>(() => ReadAllProductsSortByLikesUseCase(getIt()))
+      ..registerLazySingleton<CheckProductRequestStatusUseCase>(() => CheckProductRequestStatusUseCase(productsDatabase: getIt()))
+      ..registerLazySingleton<RequestProductUseCase>(() => RequestProductUseCase(productsDatabase: getIt()))
       ..registerLazySingleton<ReadAllLatestProductsSortByCreatedUseCase>(() => ReadAllLatestProductsSortByCreatedUseCase(getIt()))
       ..registerLazySingleton<ReadProductLikesUseCase>(() => ReadProductLikesUseCase(getIt()))
       ..registerLazySingleton<ReadProductDislikesUseCase>(() => ReadProductDislikesUseCase(getIt()))

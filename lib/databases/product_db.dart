@@ -12,9 +12,23 @@ class ProductsDatabase {
 
   getAllLatestProductsSortByCreated() async {}
 
-  Future<void> sendProductrequest({required String productId, required String userId}) => productRequestsCollection.doc("$userId$productId").set({
-        'id': "$userId$productId",
-        'productId': productId,
-        'userId': userId,
-      });
+  Future<String> sendProductrequest({required String productId, required String userId}) async {
+    String id = "";
+    await productRequestsCollection.doc("$userId$productId").set({
+      'id': "$userId$productId",
+      'productId': productId,
+      'userId': userId,
+    }).whenComplete(() => id = "$userId$productId");
+    print(id);
+    return id;
+  }
+
+  Stream<int> checkProductRequestStatus({required String productId, required String userId})  {
+    final result =  productRequestsCollection
+        .where("productId", isEqualTo: productId)
+        .where("userId", isEqualTo: userId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.length);
+    return result;
+  }
 }

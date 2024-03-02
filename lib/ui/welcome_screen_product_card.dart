@@ -29,8 +29,8 @@ class WelcomeScreenProductCard extends StatelessWidget {
                 padding: EdgeInsets.all(0),
                 onPressed: () => Navigator.of(context).push(CupertinoPageRoute(
                     builder: (context) => ProductViewPage(
-                      product: product,
-                    ))),
+                          product: product,
+                        ))),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -56,11 +56,13 @@ class WelcomeScreenProductCard extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         product.title,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     TextButton.icon(
-                      onPressed: () => context.read<LikeDislikesProvider>().likeDislikePost(productId: product.id, isLike: true),
+                      onPressed: () => context.read<LikeDislikesProvider>().likeProduct(productId: product.id, userId: ''),
                       icon: const Icon(Icons.thumb_up),
                       label: FutureBuilder<List<LikeDislikeModel>>(
                           future: likes,
@@ -70,10 +72,16 @@ class WelcomeScreenProductCard extends StatelessWidget {
                                 var likes = snapshot.data.length;
                                 return Text(likes.toString());
                               } else {
-                                return CircularProgressIndicator();
+                                    return SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator());
                               }
                             } else {
-                              return CircularProgressIndicator();
+                                  return SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator());
                             }
                           }),
                     ),

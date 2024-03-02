@@ -1,5 +1,6 @@
 import 'package:baraton_soko/models/product_model.dart';
 import 'package:baraton_soko/providers/like_dislikes_provider.dart';
+import 'package:baraton_soko/providers/products_provider.dart';
 import 'package:baraton_soko/ui/product_view_page_vendor_view_row.dart';
 import 'package:baraton_soko/ui/product_view_similar_items_section.dart';
 import 'package:flutter/material.dart';
@@ -44,14 +45,59 @@ class _ProductViewPageState extends State<ProductViewPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     TextButton.icon(
-                      onPressed: () => context.read<LikeDislikesProvider>().likeDislikePost(productId: widget.product.id, isLike: true),
+                      onPressed: () => context
+                          .read<LikeDislikesProvider>()
+                          .likeProduct(productId: widget.product.id, userId:"upAplozfZgXXapAV3nxM"),
                       icon: const Icon(Icons.thumb_up),
-                      label: const Text("Upvote"),
+                      label: StreamBuilder<int>(
+                          stream: context.read<LikeDislikesProvider>().getProductLikesCount(productId: widget.product.id),
+                          builder: (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasData) {
+                              print(snapshot.data);
+                              if (snapshot.data != null) {
+                                var likes = snapshot.data;
+                                return Text(likes.toString());
+                              } else {
+                                return SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator());
+                              }
+                            } else {
+                              return SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator());
+                            }
+                          }),
                     ),
                     const SizedBox(width: 10),
-                    IconButton(
-                      onPressed: () => context.read<LikeDislikesProvider>().likeDislikePost(productId: widget.product.id, isLike: false),
-                      icon: const Icon(Icons.thumb_down_alt_outlined),
+                    TextButton.icon(
+                      onPressed: () => context
+                          .read<LikeDislikesProvider>()
+                          .dislikeProduct(productId: widget.product.id, userId:"upAplozfZgXXapAV3nxM"),
+                      icon: const Icon(Icons.thumb_down, color: Colors.black,),
+                      label: StreamBuilder<int>(
+                          stream: context.read<LikeDislikesProvider>().getProductDisLikesCount(productId: widget.product.id),
+                          builder: (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasData) {
+                              print(snapshot.data);
+                              if (snapshot.data != null) {
+                                var likes = snapshot.data;
+                                return Text(likes.toString());
+                              } else {
+                                return SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator());
+                              }
+                            } else {
+                              return SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator());
+                            }
+                          }),
                     ),
                   ],
                 ),
@@ -93,7 +139,7 @@ class _ProductViewPageState extends State<ProductViewPage> {
                               // backgroundColor: Colors.blue.shade900,
                               // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                               ),
-                          onPressed: () {},
+                          onPressed: () => context.read<ProductsProvider>().requestProduct(productId: widget.product.id).whenComplete(() =>  Navigator.of(context).pop(),),
                           child: const Padding(
                             padding: EdgeInsets.all(4.0),
                             child: Text(
@@ -106,18 +152,36 @@ class _ProductViewPageState extends State<ProductViewPage> {
                     ),
                   );
                 },
-                child: const Padding(
+                child:  Padding(
                   padding: EdgeInsets.all(4.0),
-                  child: Text(
-                    "Request this item",
-                    style: TextStyle(color: Colors.white),
+                   child: StreamBuilder<int>(
+                stream: context.read<ProductsProvider>().checkProductRequestStatus(productId: widget.product.id),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      if (snapshot.data >= 1) {
+                        return Text(
+                          "Requested",
+                          style: TextStyle(color: Colors.white),
+                        );
+                      } else {
+                        return Text(
+                          "Request",
+                          style: TextStyle(color: Colors.white),
+                        );
+                      }
+                    } else {
+                      return SizedBox(height: 20, width: 20, child: CircularProgressIndicator());
+                      ();
+                    }
+                  }),
                   ),
                 ),
+          ]
               ),
-            ],
+        )
           ),
-        ),
-      ),
+
+
       body: LayoutBuilder(builder: (context, constraints) {
         return Container(
           child: ListView(
